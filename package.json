@@ -1,0 +1,67 @@
+{
+  "name": "pure-vue-chart",
+  "version": "0.1.0",
+  "description": "Simple and lightweight vue chart svg component without chart library dependencies",
+  "author": {
+    "name": "Danny Jackson",
+    "email": "djaxho@gmail.com"
+  },
+  "repository": "https://github.com/djaxho/pure-vue-chart",
+  "bugs": "https://github.com/djaxho/pure-vue-chart/issues",
+  "keywords": [
+    "vue",
+    "chart",
+    "pure"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/pure-vue-chart.common.js",
+  "private": false,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name pure-vue-chart src/wrapper.js",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "gsap": "^2.1.3",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-plugin-eslint": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/recommended",
+      "@vue/airbnb"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
