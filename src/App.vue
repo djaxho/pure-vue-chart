@@ -4,6 +4,24 @@
       :points="dataPoints"
       :width="chartWidth"
       :height="chartHeight"
+      :show-values="true"
+    />
+    <br>
+    <br>
+    <pure-vue-chart
+      :show-y-axis="true"
+      :points="dataPoints"
+      :width="chartWidth"
+      :height="chartHeight"
+    />
+    <br>
+    <br>
+    <pure-vue-chart
+      :max-y-axis="50"
+      :show-y-axis="true"
+      :points="dataPoints"
+      :width="chartWidth"
+      :height="chartHeight"
     />
   </div>
 </template>
@@ -18,9 +36,9 @@ export default {
   },
   data() {
     return {
-      dataPoints: [42, 8, 15, 16, 23, 42, 4, 8, 15],
-      chartWidth: 600,
-      chartHeight: 200,
+      dataPoints: [41.1, 8, 15, 16, 23, 41.1, 4, 8, 15],
+      chartWidth: 350,
+      chartHeight: 120,
     };
   },
   created() {
@@ -29,7 +47,7 @@ export default {
   methods: {
     changeData() {
       this.dataPoints = this.dataPoints.map(() => {
-        return Math.floor(Math.random() * Math.max(...this.dataPoints)) + 1
+        return Math.floor(Math.random() * 41) + 1
       });
     },
   },
