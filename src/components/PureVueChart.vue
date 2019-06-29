@@ -1,42 +1,75 @@
 <template>
-  <div>
-    <svg
-      class="chart"
-      :width="width"
-      :height="height"
-      aria-labelledby="title"
-      role="img"
-    >
-      <title
-        v-if="title"
-        id="title"
-      >{{ title }}</title>
+  <svg
+    class="pure-vue-bar-chart"
+    :width="fullSvgWidth"
+    :height="fullSvgHeight"
+    aria-labelledby="title"
+    role="img"
+  >
+    <title
+      v-if="title"
+      id="title"
+    >{{ title }}</title>
+    <g :transform="`translate(0,${extraTopHeightForYAxisLabel})`">
       <g
-        v-for="bar in chartData"
-        :key="bar.index"
-        :transform="`translate(${bar.x},0)`"
+        :transform="`translate(${showYAxis ? yAxisWidth : 0},0)`"
+        :width="innerChartWidth"
+        :height="innerChartHeight"
       >
-        <title>{{ bar.valueNotInMotion }}</title>
-        <rect
-          :width="bar.partitionWidth - 2"
-          :height="bar.height"
-          :x="2"
-          :y="bar.yOffset"
-        />
-        <text
-          v-if="showValues"
-          :x="bar.midPoint"
-          :y="bar.yOffset"
-          dy="20px"
-          text-anchor="middle"
-        >{{ bar.valueNotInMotion }}</text>
+        <g
+          v-for="bar in chartData"
+          :key="bar.index"
+          :transform="`translate(${bar.x},0)`"
+        >
+          <title>{{ bar.valueNotInMotion }}</title>
+          <rect
+            :width="bar.partitionWidth - 2"
+            :height="bar.height"
+            :x="2"
+            :y="bar.yOffset"
+          />
+          <text
+            v-if="showValues"
+            :x="bar.midPoint"
+            :y="bar.yOffset"
+            :dy="`${bar.height < 22 ? '-5px' : '15px'}`"
+            text-anchor="middle"
+          >{{ bar.valueNotInMotion }}</text>
+        </g>
       </g>
-    </svg>
-  </div>
+      <g v-if="showYAxis">
+        <line
+          :x1="yAxisWidth-1"
+          :x2="yAxisWidth-1"
+          :y1="innerChartHeight"
+          y2="0"
+          stroke="#555555"
+          stroke-width="1"
+        />
+        <g v-for="tick in getTicks()">
+          <line
+            :x1="tick.x1"
+            :y1="tick.y1"
+            :x2="tick.x2"
+            :y2="tick.y2"
+            stroke="#555555"
+            stroke-width="1"
+          />
+          <text
+            class="text-black"
+            x="0"
+            :y="tick.y1"
+            alignment-baseline="central"
+            fill="black"
+          >{{ tick.text }}</text>
+        </g>
+      </g>
+    </g>
+  </svg>
 </template>
 
 <script>
-import { TweenLite } from 'gsap/TweenLite'
+import { TweenLite } from 'gsap/TweenLite';
 
 export default {
   props: {
@@ -44,85 +77,132 @@ export default {
     points: { type: Array, default: () => [] },
     height: { type: Number, default: 100 },
     width: { type: Number, default: 300 },
+    showYAxis: { type: Boolean, default: false },
     easeIn: { type: Boolean, default: true },
     showValues: { type: Boolean, default: false },
+    maxYAxis: { type: Number, default: 0 },
   },
   data() {
     return {
       staticDataPoints: [],
       tweenedDataPoints: [],
-    }
+      xAxisHeight: 20,
+      extraTopHeightForYAxisLabel: 4,
+      extraBottomHeightForYAxisLabel: 4,
+      digitsUsedInYAxis: 0,
+    };
   },
   computed: {
-    chartWidth() {
-      return this.width
+    yAxisWidth() {
+      switch (this.digitsUsedInYAxis) {
+        case 4:
+          return 30;
+        case 3:
+          return 25;
+        case 2:
+          return 18;
+        default:
+          return 13;
+      }
     },
-    chartHeight() {
-      return this.height
+    fullSvgWidth() {
+      return this.width;
+    },
+    fullSvgHeight() {
+      return this.height;
+    },
+    innerChartWidth() {
+      return this.showYAxis
+        ? this.width - this.yAxisWidth
+        : this.width;
+    },
+    innerChartHeight() {
+      return this.height - this.extraTopHeightForYAxisLabel - this.extraBottomHeightForYAxisLabel;
     },
     partitionWidth() {
-      return this.chartWidth / this.points.length
+      return this.innerChartWidth / this.points.length;
     },
     maxDomain() {
-      return Math.max(...this.points)
+      return this.maxYAxis ? this.maxYAxis : Math.ceil(Math.max(...this.points));
     },
     chartData() {
-      return this.staticDataPoints.map((dataPoint, index) => {
-        return {
-          valueNotInMotion: this.tweenedDataPoints[index],
-          index,
-          partitionWidth: this.partitionWidth,
-          midPoint: this.partitionWidth / 2,
-          x: index * this.partitionWidth,
-          xMidpoint: index * this.partitionWidth + this.partitionWidth / 2,
-          yOffset: this.chartHeight - this.y(dataPoint),
-          height: this.y(dataPoint),
-        }
-      })
+      return this.staticDataPoints.map((dataPoint, index) => ({
+        valueNotInMotion: this.tweenedDataPoints[index],
+        index,
+        partitionWidth: this.partitionWidth,
+        midPoint: this.partitionWidth / 2,
+        x: index * this.partitionWidth,
+        xMidpoint: index * this.partitionWidth + this.partitionWidth / 2,
+        yOffset: this.innerChartHeight - this.y(dataPoint),
+        height: this.y(dataPoint),
+      }));
     },
   },
   watch: {
     points(updatedPoints) {
-      this.tween(updatedPoints)
+      this.tween(updatedPoints);
     },
   },
   created() {
     if (this.easeIn) {
-      this.tween(this.points)
+      this.tween(this.points);
     } else {
-      this.staticDataPoints = this.points
-      this.tweenedDataPoints = this.points
+      this.staticDataPoints = this.points;
+      this.tweenedDataPoints = this.points;
     }
   },
   methods: {
     y(val) {
-      return (val / this.maxDomain) * this.chartHeight
+      return (val / this.maxDomain) * this.innerChartHeight;
     },
     tween(desiredDataArray) {
-      const desiredData = {}
-      const initialData = {}
+      const desiredData = {};
+      const initialData = {};
       for (let i = 0; i < desiredDataArray.length; i += 1) {
-        const key = i.toString()
-        desiredData[key] = desiredDataArray[i]
-        initialData[key] = this.staticDataPoints[i] || 0
+        const key = i.toString();
+        desiredData[key] = desiredDataArray[i];
+        initialData[key] = this.staticDataPoints[i] || 0;
       }
       const convertBackToArray = () => {
-        const obj = Object.values(initialData)
-        obj.pop()
-        this.staticDataPoints = obj
+        const obj = Object.values(initialData);
+        obj.pop();
+        this.staticDataPoints = obj;
+      };
+      TweenLite.to(initialData, 0.5, { ...desiredData, onUpdate: convertBackToArray });
+      this.tweenedDataPoints = desiredDataArray;
+    },
+    getTicks() {
+      for (let i = 6; i > 0; i -= 1) {
+        if (this.maxDomain % i === 0) {
+          const shouldForceDecimals = i < 3;
+          const numberOfTicks = shouldForceDecimals ? 3 : i;
+          this.digitsUsedInYAxis = this.maxDomain
+            .toFixed(shouldForceDecimals ? 1 : 0)
+            .replace('.', '')
+            .length;
+          return [...new Array(numberOfTicks + 1)].map((item, key) => {
+            const tickValue = this.maxDomain / numberOfTicks * (numberOfTicks - key);
+            const yCoord = this.innerChartHeight / numberOfTicks * key;
+            return {
+              text: shouldForceDecimals ? tickValue.toFixed(1) : tickValue,
+              x1: this.yAxisWidth - 4,
+              y1: yCoord,
+              x2: this.yAxisWidth - 1,
+              y2: yCoord,
+            };
+          });
+        }
       }
-      TweenLite.to(initialData, 0.5, { ...desiredData, onUpdate: convertBackToArray })
-      this.tweenedDataPoints = desiredDataArray
     },
   },
-}
+};
 </script>
 
 <style scoped lang="scss">
-    .chart rect {
-        fill: deepskyblue;
-    }
-    .chart text {
-        font: 12px sans-serif;
-    }
+  .pure-vue-bar-chart rect {
+    fill: deepskyblue;
+  }
+  .pure-vue-bar-chart text {
+    font: 10px sans-serif;
+  }
 </style>
