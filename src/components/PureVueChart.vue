@@ -10,7 +10,7 @@
       v-if="title"
       id="title"
     >{{ title }}</title>
-    <g :transform="`translate(0,${extraTopHeightForYAxisLabel})`">
+    <g :transform="`translate(0,${showYAxis ? extraTopHeightForYAxisLabel : 0})`">
       <g
         :transform="`translate(${showYAxis ? yAxisWidth : 0},0)`"
         :width="innerChartWidth"
@@ -35,7 +35,32 @@
             :dy="`${bar.height < 22 ? '-5px' : '15px'}`"
             text-anchor="middle"
           >{{ bar.valueNotInMotion }}</text>
+          <g v-if="showXAxis">
+            <text
+              :x="bar.midPoint"
+              :y="`${innerChartHeight + 14}px`"
+              text-anchor="middle"
+            >{{ dataLabels[bar.index] }}</text>
+            <line
+              :x1="bar.midPoint"
+              :x2="bar.midPoint"
+              :y1="innerChartHeight+3"
+              :y2="innerChartHeight"
+              stroke="#555555"
+              stroke-width="1"
+            />
+          </g>
         </g>
+      </g>
+      <g v-if="showXAxis">
+        <line
+          :x1="showYAxis ? yAxisWidth-1 : 2"
+          :x2="innerChartWidth + yAxisWidth"
+          :y1="innerChartHeight"
+          :y2="innerChartHeight"
+          stroke="#555555"
+          stroke-width="1"
+        />
       </g>
       <g v-if="showYAxis">
         <line
@@ -69,7 +94,7 @@
 </template>
 
 <script>
-import { TweenLite } from 'gsap/TweenLite';
+import { TweenLite } from 'gsap/TweenLite'
 
 export default {
   props: {
@@ -78,52 +103,85 @@ export default {
     height: { type: Number, default: 100 },
     width: { type: Number, default: 300 },
     showYAxis: { type: Boolean, default: false },
+    showXAxis: { type: Boolean, default: false },
     easeIn: { type: Boolean, default: true },
     showValues: { type: Boolean, default: false },
     maxYAxis: { type: Number, default: 0 },
+    useMonthLabels: { type: Boolean, default: false },
   },
   data() {
     return {
+      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       staticDataPoints: [],
       tweenedDataPoints: [],
-      xAxisHeight: 20,
       extraTopHeightForYAxisLabel: 4,
       extraBottomHeightForYAxisLabel: 4,
       digitsUsedInYAxis: 0,
-    };
+    }
   },
   computed: {
+    usingObjectsForDataPoints() {
+      return this.points.every(x => typeof x === 'object')
+    },
+    dataPoints() {
+      return this.usingObjectsForDataPoints
+        ? this.points.map(item => item.value)
+        : this.points
+    },
+    dataLabels() {
+      return this.points.map((point, i) => {
+        if (this.useMonthLabels) {
+          return this.months[i]
+        }
+        return this.usingObjectsForDataPoints
+          ? point.label
+          : i + 1
+      })
+    },
     yAxisWidth() {
       switch (this.digitsUsedInYAxis) {
         case 4:
-          return 30;
+          return 30
         case 3:
-          return 25;
+          return 25
         case 2:
-          return 18;
+          return 18
         default:
-          return 13;
+          return 13
       }
     },
+    xAxisHeight() {
+      return this.showYAxis
+        ? 12
+        : 12 + this.extraBottomHeightForYAxisLabel + this.extraTopHeightForYAxisLabel
+    },
     fullSvgWidth() {
-      return this.width;
+      return this.width
     },
     fullSvgHeight() {
-      return this.height;
+      return this.height
     },
     innerChartWidth() {
       return this.showYAxis
         ? this.width - this.yAxisWidth
-        : this.width;
+        : this.width
     },
     innerChartHeight() {
-      return this.height - this.extraTopHeightForYAxisLabel - this.extraBottomHeightForYAxisLabel;
+      let chartHeight = this.height
+
+      if (this.showYAxis) {
+        chartHeight -= (this.extraTopHeightForYAxisLabel + this.extraBottomHeightForYAxisLabel)
+      }
+      if (this.showXAxis) {
+        chartHeight -= this.xAxisHeight
+      }
+      return chartHeight
     },
     partitionWidth() {
-      return this.innerChartWidth / this.points.length;
+      return this.innerChartWidth / this.dataPoints.length
     },
     maxDomain() {
-      return this.maxYAxis ? this.maxYAxis : Math.ceil(Math.max(...this.points));
+      return this.maxYAxis ? this.maxYAxis : Math.ceil(Math.max(...this.dataPoints))
     },
     chartData() {
       return this.staticDataPoints.map((dataPoint, index) => ({
@@ -135,74 +193,74 @@ export default {
         xMidpoint: index * this.partitionWidth + this.partitionWidth / 2,
         yOffset: this.innerChartHeight - this.y(dataPoint),
         height: this.y(dataPoint),
-      }));
+      }))
     },
   },
   watch: {
     points(updatedPoints) {
-      this.tween(updatedPoints);
+      this.tween(updatedPoints)
     },
   },
   created() {
     if (this.easeIn) {
-      this.tween(this.points);
+      this.tween(this.dataPoints)
     } else {
-      this.staticDataPoints = this.points;
-      this.tweenedDataPoints = this.points;
+      this.staticDataPoints = this.dataPoints
+      this.tweenedDataPoints = this.dataPoints
     }
   },
   methods: {
     y(val) {
-      return (val / this.maxDomain) * this.innerChartHeight;
+      return (val / this.maxDomain) * this.innerChartHeight
     },
     tween(desiredDataArray) {
-      const desiredData = {};
-      const initialData = {};
+      const desiredData = {}
+      const initialData = {}
       for (let i = 0; i < desiredDataArray.length; i += 1) {
-        const key = i.toString();
-        desiredData[key] = desiredDataArray[i];
-        initialData[key] = this.staticDataPoints[i] || 0;
+        const key = i.toString()
+        desiredData[key] = desiredDataArray[i]
+        initialData[key] = this.staticDataPoints[i] || 0
       }
       const convertBackToArray = () => {
-        const obj = Object.values(initialData);
-        obj.pop();
-        this.staticDataPoints = obj;
-      };
-      TweenLite.to(initialData, 0.5, { ...desiredData, onUpdate: convertBackToArray });
-      this.tweenedDataPoints = desiredDataArray;
+        const obj = Object.values(initialData)
+        obj.pop()
+        this.staticDataPoints = obj
+      }
+      TweenLite.to(initialData, 0.5, { ...desiredData, onUpdate: convertBackToArray })
+      this.tweenedDataPoints = desiredDataArray
     },
     getTicks() {
       for (let i = 6; i > 0; i -= 1) {
         if (this.maxDomain % i === 0) {
-          const shouldForceDecimals = i < 3;
-          const numberOfTicks = shouldForceDecimals ? 3 : i;
+          const shouldForceDecimals = i < 3
+          const numberOfTicks = shouldForceDecimals ? 3 : i
           this.digitsUsedInYAxis = this.maxDomain
             .toFixed(shouldForceDecimals ? 1 : 0)
             .replace('.', '')
-            .length;
+            .length
           return [...new Array(numberOfTicks + 1)].map((item, key) => {
-            const tickValue = this.maxDomain / numberOfTicks * (numberOfTicks - key);
-            const yCoord = this.innerChartHeight / numberOfTicks * key;
+            const tickValue = this.maxDomain / numberOfTicks * (numberOfTicks - key)
+            const yCoord = this.innerChartHeight / numberOfTicks * key
             return {
               text: shouldForceDecimals ? tickValue.toFixed(1) : tickValue,
               x1: this.yAxisWidth - 4,
               y1: yCoord,
               x2: this.yAxisWidth - 1,
               y2: yCoord,
-            };
-          });
+            }
+          })
         }
       }
     },
   },
-};
+}
 </script>
 
 <style scoped lang="scss">
   .pure-vue-bar-chart rect {
-    fill: deepskyblue;
+    fill: deepskyblue
   }
   .pure-vue-bar-chart text {
-    font: 10px sans-serif;
+    font: 10px sans-serif
   }
 </style>
