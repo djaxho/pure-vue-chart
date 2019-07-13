@@ -1,7 +1,4 @@
 <p align="center">
-  <img src="src/assets/long-charts.png">
-</p>
-<p align="center">
   <h1>Pure Vue Chart</h1>
 </p>
 <p align="center">
@@ -61,7 +58,7 @@ components: {
 :use-month-labels="true"
 ```
 
-#####Notes on y-axis labels:
+#### Notes on y-axis labels:
 <p>
 Y-axis labels, by default will be from 1 - length-of-data.
 But you can automatically use Months by using the prop `:use-month-labels="true"`.
