@@ -1,6 +1,6 @@
 {
   "name": "pure-vue-chart",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Simple and lightweight vue chart svg component without chart library dependencies",
   "author": {
     "name": "Danny Jackson",
