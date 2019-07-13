@@ -58,9 +58,9 @@ components: {
 :use-month-labels="true"
 ```
 
-#### Notes on y-axis labels:
+#### Notes on x-axis labels:
 <p>
-Y-axis labels, by default will be from 1 - length-of-data.
+X-axis labels, by default will be from 1 - length-of-data.
 But you can automatically use Months by using the prop `:use-month-labels="true"`.
 Or you can provide the data as an array of objects, each with a `value` and `label` like so:
 </p>
@@ -72,7 +72,7 @@ Or you can provide the data as an array of objects, each with a `value` and `lab
 <h3>Contributing</h3>
 I'm open to any issues or pull requests so long as
 they are simple, easy to read, use the eslint settings in package.json, 
-and follow commitizen-esque style commit formats
+and follow commitizen-esque style commit formats. Just open an issue on github and start a discussion.
 - pure-vue-chart issues - https://github.com/djaxho/pure-vue-chart/issues
 
 <h3>Authors or Acknowledgments</h3>
