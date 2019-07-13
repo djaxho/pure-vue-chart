@@ -23,6 +23,47 @@
       :width="chartWidth"
       :height="chartHeight"
     />
+    <br>
+    <br>
+    <pure-vue-chart
+      :max-y-axis="50"
+      :show-y-axis="true"
+      :show-x-axis="true"
+      :points="dataPoints"
+      :width="chartWidth"
+      :height="chartHeight"
+    />
+    <br>
+    <br>
+    <pure-vue-chart
+      :show-y-axis="true"
+      :show-x-axis="true"
+      :points="dataPoints"
+      :width="chartWidth"
+      :height="chartHeight"
+      :use-month-labels="true"
+    />
+    <br>
+    <br>
+    <pure-vue-chart
+      :show-y-axis="false"
+      :show-x-axis="true"
+      :points="dataPoints"
+      :width="chartWidth"
+      :height="chartHeight"
+      :show-values="true"
+      :use-month-labels="true"
+    />
+    <br>
+    <br>
+    <pure-vue-chart
+      :show-y-axis="false"
+      :show-x-axis="true"
+      :points="dataPointObjects"
+      :width="chartWidth"
+      :height="chartHeight"
+      :show-values="true"
+    />
   </div>
 </template>
 
@@ -36,7 +77,8 @@ export default {
   },
   data() {
     return {
-      dataPoints: [41.1, 8, 15, 16, 23, 41.1, 4, 8, 15],
+      dataPoints: [41.1, 1, 15, 16, 23, 41.1, 4, 8, 15, 22, 1, 12],
+      dataPointObjects: [{label: 'N', value: 41.1}, {label: 'NW', value: 1}, {label: 'W', value: 15}, {label: 'SW', value: 16}, {label: 'S', value: 23}, {label: 'SE', value: 41.1}, {label: 'E', value: 4}, {label: 'NE', value: 8}],
       chartWidth: 350,
       chartHeight: 120,
     };

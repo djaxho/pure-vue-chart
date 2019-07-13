@@ -1,19 +1,13 @@
-<h1 align="center">Pure Vue Chart</h1>
-
-<p align="center">Simple and lightweight vue chart component without chart library dependencies</p>
-
+<p align="center">
+  <img src="src/assets/long-charts.png">
+</p>
+<p align="center">
+  <h1>Pure Vue Chart</h1>
+</p>
+<p align="center">
+    A simple and lightweight vue component for making charts that do not rely on large chart libraries and will not bloat your dependencies
+</p>
 <hr/>
-
-<p>A simple vue component for making charts that do not rely on large chart libraries and will not bloat your dependencies</p>
-
-<h3> List of features </h3>
-
-<ul>
-  <li>Simple bar charts</li>
-  <li>Line charts (planned)</li>
-  <li>Pie charts (planned)</li>
-  <li>Rose charts (planned)</li>
-</ul>
 
 <h3>Example</h3>
 
@@ -25,35 +19,25 @@
 />
 ```
 
-![](src/assets/charts.gif)
+<img src="src/assets/charts.gif" alt="charts" width="350"/>
 
 <p>When propes are updated the graph will automatically animate to the new values.</p>
 
-<h3> Download & Installation </h3>
-
-<p>
-To install:
-</p>
-
+## Install
 ```
-$ npm i pure-vue-chart
+npm i pure-vue-chart
 ```
-<p>
 Import it:
-</p>
-
 ```
 import PureVueChart from 'pure-vue-chart';
 ```
-<p>
-Use it:
-</p>
-
+Register it in your component:
 ```
 components: {
     PureVueChart,
 },
 ```
+## Use it
 ```
 <pure-vue-chart
   :points="[3,5,2,5,4]"
@@ -61,42 +45,31 @@ components: {
   :height="200"
 />
 ```
-<h4>Options</h4>
-<p>To further control the display of data, you can include a y-axis or
-display the values on the chart itself, or both:</p>
+## Options
+<p>To further control the display of data, you can use simple props to manipulate the charts. Here are some examples:</p>
 
-![](src/assets/charts-with-labels.png)
+![](src/assets/chart-examples.png)
 
-Use the props `:show-values="true"` and `:show-y-axis="true"` to accomplish this, as in the following two examples:
-
+#### Most of the available props below are self-explanatory:
 ```
-<pure-vue-chart
-  :points="dataPoints"
-  :width="chartWidth"
-  :height="chartHeight"
-  :show-values="true"
-/>
-    
-<pure-vue-chart
-  :show-y-axis="true"
-  :points="dataPoints"
-  :width="chartWidth"
-  :height="chartHeight"
-/>
+:points=[1,4,5,3,4]
+:show-y-axis="false"
+:show-x-axis="true"
+:width="400"
+:height="200"
+:show-values="true"
+:use-month-labels="true"
 ```
 
-When using the y-axis, you may also manually specify the max y axis value, using the prop `:max-y-axis="500"` as in the following example:
-
-![](src/assets/charts-with-max-axis.png)
+#####Notes on y-axis labels:
+<p>
+Y-axis labels, by default will be from 1 - length-of-data.
+But you can automatically use Months by using the prop `:use-month-labels="true"`.
+Or you can provide the data as an array of objects, each with a `value` and `label` like so:
+</p>
 
 ```
-<pure-vue-chart
-  :max-y-axis="80"
-  :show-y-axis="true"
-  :points="dataPoints"
-  :width="chartWidth"
-  :height="chartHeight"
-/>
+:points=[{label: 'N', value: 41.1}, {label: 'NW', value: 1}, {label: 'W', value: 15}]
 ```
 
 <h3>Contributing</h3>
@@ -108,6 +81,14 @@ and follow commitizen-esque style commit formats
 <h3>Authors or Acknowledgments</h3>
 <ul>
   <li>Danny Jackson</li>
+</ul>
+
+<h3> List of features </h3>
+<ul>
+  <li>Simple bar charts</li>
+  <li>Line charts (planned)</li>
+  <li>Pie charts (planned)</li>
+  <li>Rose charts (planned)</li>
 </ul>
 
 <h3>License</h3>
