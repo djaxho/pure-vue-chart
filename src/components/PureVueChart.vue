@@ -89,6 +89,12 @@
           >{{ tick.text }}</text>
         </g>
       </g>
+      <line v-if="showTrendingLine"
+        :x1="trendingline.x1"
+        :y1="trendingline.y1"
+        :x2="trendingline.x2"
+        :y2="trendingline.y2"
+        style="stroke:rgb(255,0,0);stroke-width:2" />
     </g>
   </svg>
 </template>
@@ -104,6 +110,7 @@ export default {
     width: { type: Number, default: 300 },
     showYAxis: { type: Boolean, default: false },
     showXAxis: { type: Boolean, default: false },
+    showTrendingLine: { type: Boolean, default: false },
     easeIn: { type: Boolean, default: true },
     showValues: { type: Boolean, default: false },
     maxYAxis: { type: Number, default: 0 },
@@ -195,6 +202,15 @@ export default {
         height: this.y(dataPoint),
       }))
     },
+    trendingline() {
+      const slopeValues = this.applySlope(this.dataPoints);
+      return {
+        x1: 0,
+        y1: this.innerChartHeight - this.y(slopeValues[0]),
+        x2: this.innerChartWidth,
+        y2:  this.innerChartHeight - this.y(slopeValues[slopeValues.length-1])
+      }
+    }
   },
   watch: {
     points(updatedPoints) {
@@ -252,6 +268,27 @@ export default {
         }
       }
     },
+    applySlope(values) {
+      let xAvg = 0, yAvg = 0;
+      for (let x = 0; x < values.length; x++) {
+        xAvg += x;
+        yAvg += values[x];
+      }
+      xAvg = xAvg / values.length;
+      yAvg = yAvg / values.length;
+      let v1 = 0, v2 = 0;
+      for (let x = 0; x < values.length; x++) {
+        v1 += (x - xAvg) * (values[x] - yAvg);
+        v2 += Math.pow(x - xAvg, 2);
+      }
+      const a = v1 / v2;
+      const b = yAvg - a * xAvg;
+      let result = [];
+      for (let index = 0; index < values.length; index++) {
+        result.push(a * index + b);
+      }
+      return result;
+    }
   },
 }
 </script>
