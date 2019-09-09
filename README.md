@@ -56,6 +56,7 @@ components: {
 :height="200"
 :show-values="true"
 :use-month-labels="true"
+:months="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']"
 ```
 
 #### Notes on x-axis labels:
