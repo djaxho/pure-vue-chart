@@ -65,6 +65,41 @@
       :height="chartHeight"
       :show-values="true"
     />
+    <br>
+    <br>
+    <pure-vue-chart
+      :show-y-axis="false"
+      :show-x-axis="true"
+      :points="dataPointObjects"
+      :width="chartWidth"
+      :height="chartHeight"
+      :show-values="true"
+    >
+      <template v-slot:N>
+        hello
+      </template>
+      <template v-slot:NW>
+        these
+      </template>
+      <template v-slot:W>
+        are
+      </template>
+      <template v-slot:SW>
+        custom
+      </template>
+      <template v-slot:S>
+        labels
+      </template>
+      <template v-slot:SE>
+        &#128513;
+      </template>
+      <template v-slot:E>
+        &#129315;
+      </template>
+      <template v-slot:NE>
+        &#128526;
+      </template>
+    </pure-vue-chart>
   </div>
 </template>
 

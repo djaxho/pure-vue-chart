@@ -37,10 +37,12 @@
           >{{ bar.valueNotInMotion }}</text>
           <g v-if="showXAxis">
             <text
-              :x="bar.midPoint"
-              :y="`${innerChartHeight + 14}px`"
-              text-anchor="middle"
-            >{{ dataLabels[bar.index] }}</text>
+              :x="bar.midPoint"
+              :y="`${innerChartHeight + 14}px`"
+              text-anchor="middle"
+            >
+              <slot :name='dataLabels[bar.index]'>{{ dataLabels[bar.index] }}</slot>
+            </text>
             <line
               :x1="bar.midPoint"
               :x2="bar.midPoint"
