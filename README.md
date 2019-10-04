@@ -59,13 +59,20 @@ components: {
 :months="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']"
 ```
 
-#### Notes on x-axis labels:
-<p>
+### Additional Features:
+#### Trendline
+You can add a simple linear trend line by using the following props:
+```
+:show-trend-line="true"
+:trend-line-width="2"
+trend-line-color="lightblue"
+```
+![](src/assets/trendline.png)
+
+#### X-axis labels:
 X-axis labels, by default will be from 1 - length-of-data.
 But you can automatically use Months by using the prop `:use-month-labels="true"`.
 Or you can provide the data as an array of objects, each with a `value` and `label` like so:
-</p>
-
 ```
 :points=[{label: 'N', value: 41.1}, {label: 'NW', value: 1}, {label: 'W', value: 15}]
 ```
