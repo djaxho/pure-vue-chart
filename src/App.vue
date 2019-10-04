@@ -64,6 +64,15 @@
       :height="chartHeight"
       :show-values="true"
     />
+    <br>
+    <br>
+    <pure-vue-chart
+      :points="dataPoints"
+      :width="chartWidth"
+      :height="chartHeight"
+      :show-values="true"
+      :show-trending-line="true"
+    />
   </div>
 </template>
 
