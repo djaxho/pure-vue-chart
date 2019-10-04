@@ -115,10 +115,10 @@ export default {
     showValues: { type: Boolean, default: false },
     maxYAxis: { type: Number, default: 0 },
     useMonthLabels: { type: Boolean, default: false },
+    months: { type: Array, default: () => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] },
   },
   data() {
     return {
-      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       staticDataPoints: [],
       tweenedDataPoints: [],
       extraTopHeightForYAxisLabel: 4,
