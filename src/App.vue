@@ -75,30 +75,14 @@
       :height="chartHeight"
       :show-values="true"
     >
-      <template v-slot:N>
-        hello
-      </template>
-      <template v-slot:NW>
-        these
-      </template>
-      <template v-slot:W>
-        are
-      </template>
-      <template v-slot:SW>
-        custom
-      </template>
-      <template v-slot:S>
-        labels
-      </template>
-      <template v-slot:SE>
-        &#128513;
-      </template>
-      <template v-slot:E>
-        &#129315;
-      </template>
-      <template v-slot:NE>
-        &#128526;
-      </template>
+      <template v-slot:label="barProps" >
+        <tspan v-if="barProps.bar.index === 1">Here</tspan>
+        <tspan v-else-if="barProps.bar.index === 2">are</tspan>
+        <tspan v-else-if="barProps.bar.index === 3">custom</tspan>
+        <tspan v-else-if="barProps.bar.index === 4">labels</tspan>
+        <tspan v-else-if="barProps.bar.index === 5">&#128526;</tspan>
+        <tspan v-else>{{ barProps.bar.index }}</tspan>
+      </template>
     </pure-vue-chart>
   </div>
 </template>
@@ -133,6 +117,9 @@ export default {
 </script>
 
 <style>
+.hello {
+  transform: rotate(30 20,40);
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
