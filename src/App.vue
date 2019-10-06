@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <pure-vue-chart
+    <!-- <pure-vue-chart
       :points="dataPoints"
       :width="chartWidth"
       :height="chartHeight"
-      :show-values="true"
+      :show-value:show-values="['val', 'pct']"
     />
     <br>
     <br>
@@ -44,26 +44,26 @@
       :use-month-labels="true"
     />
     <br>
-    <br>
+    <br> -->
     <pure-vue-chart
       :show-y-axis="false"
       :show-x-axis="true"
       :points="dataPoints"
       :width="chartWidth"
       :height="chartHeight"
-      :show-values="true"
+      :show-values="['val', 'pct']"
       :use-month-labels="true"
       :months="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']"
     />
     <br>
-    <br>
+    <br> 
     <pure-vue-chart
       :show-y-axis="false"
       :show-x-axis="true"
       :points="dataPointObjects"
+      :show-values="['val', 'pct']"
       :width="chartWidth"
       :height="chartHeight"
-      :show-values="true"
     />
   </div>
 </template>

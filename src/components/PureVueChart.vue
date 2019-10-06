@@ -29,12 +29,19 @@
             :y="bar.yOffset"
           />
           <text
-            v-if="showValues"
+            v-if="showValues.some(val => val === 'val')"
             :x="bar.midPoint"
             :y="bar.yOffset"
-            :dy="`${bar.height < 22 ? '-5px' : '15px'}`"
+            :dy="valPos(bar.height, 'val')+'px'"
             text-anchor="middle"
           >{{ bar.valueNotInMotion }}</text>
+          <text
+            v-if="showValues.some(val => val === 'pct')"
+            :x="bar.midPoint"
+            :y="bar.yOffset"
+            :dy="valPos(bar.height, 'pct')+'px'"
+            text-anchor="middle"
+          >here</text>
           <g v-if="showXAxis">
             <text
               :x="bar.midPoint"
@@ -105,7 +112,7 @@ export default {
     showYAxis: { type: Boolean, default: false },
     showXAxis: { type: Boolean, default: false },
     easeIn: { type: Boolean, default: true },
-    showValues: { type: Boolean, default: false },
+    showValues: { type: Array, default: () => [] },
     maxYAxis: { type: Number, default: 0 },
     useMonthLabels: { type: Boolean, default: false },
     months: { type: Array, default: () => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] },
@@ -210,6 +217,17 @@ export default {
     }
   },
   methods: {
+    valPos(barHeight, type) {
+      let position;
+      switch(true) {
+        case barHeight < 22:
+          position = -5;
+          break;
+        default:
+           position = 15;
+      }
+      return type = 'pct' && this.showValues.length > 1 ? (position - 5).toString() : position.toString()
+    },
     y(val) {
       return (val / this.maxDomain) * this.innerChartHeight
     },
