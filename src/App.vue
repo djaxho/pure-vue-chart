@@ -61,7 +61,7 @@
       :show-y-axis="false"
       :show-x-axis="true"
       :points="dataPointObjects"
-      :show-values="['val', 'pct']"
+      :show-values="['pct']"
       :width="chartWidth"
       :height="chartHeight"
     />

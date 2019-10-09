@@ -222,11 +222,15 @@ export default {
       switch(true) {
         case barHeight < 22:
           position = -5;
+        case barHeight < 22 && this.showValues.length > 1:
+          position = -12;
           break;
         default:
            position = 15;
       }
-      return type = 'pct' && this.showValues.length > 1 ? (position - 5).toString() : position.toString()
+      if(this.showValues.length < 2) return position.toString();
+      position += type === 'pct' ? 7 : -5;
+      return position.toString();
     },
     y(val) {
       return (val / this.maxDomain) * this.innerChartHeight
