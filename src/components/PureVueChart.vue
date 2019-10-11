@@ -41,7 +41,7 @@
             :y="bar.yOffset"
             :dy="valPos(bar.height, 'pct')+'px'"
             text-anchor="middle"
-          >here</text>
+          >{{ bar.percentage }}</text>
           <g v-if="showXAxis">
             <text
               :x="bar.midPoint"
@@ -200,6 +200,7 @@ export default {
         xMidpoint: index * this.partitionWidth + this.partitionWidth / 2,
         yOffset: this.innerChartHeight - this.y(dataPoint),
         height: this.y(dataPoint),
+        percentage: this.getPercentage(dataPoint),
       }))
     },
   },
@@ -217,6 +218,11 @@ export default {
     }
   },
   methods: {
+    getPercentage(dataPoint) {
+      const sum = this.staticDataPoints.reduce((a, b) => a + b, 0);
+      let percentage = Math.round(dataPoint / sum * 100);
+      return percentage < 1 ? percentage = "<1": `${percentage}%`;
+    },
     valPos(barHeight, type) {
       let position;
       switch(true) {

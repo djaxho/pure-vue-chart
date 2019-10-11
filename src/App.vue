@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <pure-vue-chart
+    <pure-vue-chart
       :points="dataPoints"
       :width="chartWidth"
       :height="chartHeight"
@@ -44,7 +44,7 @@
       :use-month-labels="true"
     />
     <br>
-    <br> -->
+    <br>
     <pure-vue-chart
       :show-y-axis="false"
       :show-x-axis="true"
@@ -56,14 +56,28 @@
       :months="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']"
     />
     <br>
-    <br> 
+    <br>
     <pure-vue-chart
       :show-y-axis="false"
       :show-x-axis="true"
-      :points="dataPointObjects"
-      :show-values="['pct']"
+      :points="dataPoints"
       :width="chartWidth"
       :height="chartHeight"
+      :show-values="['pct']"
+      :use-month-labels="true"
+      :months="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']"
+    />
+    <br>
+    <br>
+    <pure-vue-chart
+      :show-y-axis="false"
+      :show-x-axis="true"
+      :points="dataPoints"
+      :width="chartWidth"
+      :height="chartHeight"
+      :show-values="['val']"
+      :use-month-labels="true"
+      :months="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']"
     />
   </div>
 </template>
