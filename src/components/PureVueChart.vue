@@ -40,7 +40,9 @@
               :x="bar.midPoint"
               :y="`${innerChartHeight + 14}px`"
               text-anchor="middle"
-            >{{ dataLabels[bar.index] }}</text>
+            >
+              <slot name='label' :bar="bar">{{ dataLabels[bar.index] }}</slot>
+            </text>
             <line
               :x1="bar.midPoint"
               :x2="bar.midPoint"

@@ -69,6 +69,24 @@
       :show-values="true"
     />
     <br>
+    <br>
+    <pure-vue-chart
+      :show-y-axis="false"
+      :show-x-axis="true"
+      :points="dataPointObjects"
+      :width="chartWidth"
+      :height="chartHeight"
+      :show-values="true"
+    >
+      <template v-slot:label="barProps" >
+        <tspan v-if="barProps.bar.index === 1">Here</tspan>
+        <tspan v-else-if="barProps.bar.index === 2">are</tspan>
+        <tspan v-else-if="barProps.bar.index === 3">custom</tspan>
+        <tspan v-else-if="barProps.bar.index === 4">labels</tspan>
+        <tspan v-else-if="barProps.bar.index === 5">&#128526;</tspan>
+        <tspan v-else>{{ barProps.bar.index }}</tspan>
+      </template>
+    </pure-vue-chart>
   </div>
 </template>
 
@@ -102,6 +120,9 @@ export default {
 </script>
 
 <style>
+.hello {
+  transform: rotate(30 20,40);
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
