@@ -27,6 +27,7 @@
             :height="bar.height"
             :x="2"
             :y="bar.yOffset"
+            :style="{ fill: barColor }"
           />
           <text
             v-if="showValues"
@@ -123,6 +124,7 @@ export default {
     showValues: { type: Boolean, default: false },
     maxYAxis: { type: Number, default: 0 },
     useMonthLabels: { type: Boolean, default: false },
+    barColor: { type: String, default: 'deepskyblue' },
   },
   data() {
     return {
@@ -319,9 +321,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .pure-vue-bar-chart rect {
-    fill: deepskyblue
-  }
   .pure-vue-bar-chart text {
     font: 10px sans-serif
   }
