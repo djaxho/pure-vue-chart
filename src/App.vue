@@ -56,6 +56,7 @@
       :height="chartHeight"
       :show-values="true"
       :use-month-labels="true"
+      :animation-duration="2"
       :months="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']"
     />
     <br>
