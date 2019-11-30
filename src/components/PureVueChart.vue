@@ -222,7 +222,7 @@ export default {
   },
   watch: {
     points(updatedPoints) {
-      this.tween(updatedPoints);
+      this.tween(this.dataPoints);
     },
   },
   created() {
