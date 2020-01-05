@@ -36,13 +36,18 @@
             text-anchor="middle"
           >{{ bar.staticValue }}</text>
           <g v-if="showXAxis">
-            <text
-              :x="bar.midPoint"
-              :y="`${innerChartHeight + 14}px`"
-              text-anchor="middle"
+            <slot
+              name="label"
+              :bar="bar"
             >
-              <slot name='label' :bar="bar">{{ dataLabels[bar.index] }}</slot>
-            </text>
+              <text
+                :x="bar.midPoint"
+                :y="`${bar.yLabel + 10}px`"
+                text-anchor="middle"
+              >
+                {{ bar.label }}
+              </text>
+            </slot>
             <line
               :x1="bar.midPoint"
               :x2="bar.midPoint"
@@ -116,6 +121,7 @@ export default {
     width: { type: Number, default: 300 },
     showYAxis: { type: Boolean, default: false },
     showXAxis: { type: Boolean, default: false },
+    labelHeight: { type: Number, default: 12 },
     showTrendLine: { type: Boolean, default: false },
     trendLineColor: { type: String, default: 'green' },
     trendLineWidth: { type: Number, default: 2 },
@@ -167,8 +173,8 @@ export default {
     },
     xAxisHeight() {
       return this.showYAxis
-        ? 12
-        : 12 + this.extraBottomHeightForYAxisLabel + this.extraTopHeightForYAxisLabel;
+        ? this.labelHeight
+        : this.labelHeight + this.extraBottomHeightForYAxisLabel + this.extraTopHeightForYAxisLabel;
     },
     fullSvgWidth() {
       return this.width;
@@ -202,8 +208,10 @@ export default {
       return this.dynamicPoints.map((dynamicValue, index) => ({
         staticValue: this.staticPoints[index],
         index,
+        label: this.dataLabels[index],
         width: this.partitionWidth - 2,
         midPoint: this.partitionWidth / 2,
+        yLabel: this.innerChartHeight + 4,
         x: index * this.partitionWidth,
         xMidpoint: index * this.partitionWidth + this.partitionWidth / 2,
         yOffset: this.innerChartHeight - this.y(dynamicValue),

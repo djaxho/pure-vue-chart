@@ -73,18 +73,69 @@
     <pure-vue-chart
       :show-y-axis="false"
       :show-x-axis="true"
+      :label-height="20"
       :points="dataPointObjects"
       :width="chartWidth"
       :height="chartHeight"
       :show-values="true"
     >
-      <template v-slot:label="barProps" >
-        <tspan v-if="barProps.bar.index === 1">Here</tspan>
-        <tspan v-else-if="barProps.bar.index === 2">are</tspan>
-        <tspan v-else-if="barProps.bar.index === 3">custom</tspan>
-        <tspan v-else-if="barProps.bar.index === 4">labels</tspan>
-        <tspan v-else-if="barProps.bar.index === 5">&#128526;</tspan>
-        <tspan v-else>{{ barProps.bar.index }}</tspan>
+      <template v-slot:label="barProps">
+        <text
+          v-if="barProps.bar.index === 1"
+          :x="barProps.bar.midPoint"
+          :y="`${barProps.bar.yLabel + 10}px`"
+          text-anchor="middle"
+        >
+          Here
+        </text>
+        <text
+          v-else-if="barProps.bar.index === 2"
+          :x="barProps.bar.midPoint"
+          :y="`${barProps.bar.yLabel + 10}px`"
+          text-anchor="middle"
+        >
+          are
+        </text>
+        <text
+          v-else-if="barProps.bar.index === 3"
+          :x="barProps.bar.midPoint"
+          :y="`${barProps.bar.yLabel + 10}px`"
+          text-anchor="middle"
+        >
+          custom
+        </text>
+        <text
+          v-else-if="barProps.bar.index === 4"
+          :x="barProps.bar.midPoint"
+          :y="`${barProps.bar.yLabel + 10}px`"
+          text-anchor="middle"
+        >
+          labels
+        </text>
+        <image
+          v-else-if="barProps.bar.index === 5"
+          :x="`${barProps.bar.midPoint - 10}px`"
+          :y="`${barProps.bar.yLabel}px`"
+          height="20"
+          width="20"
+          href="https://raw.githubusercontent.com/vuejs/art/master/logo.png"
+        />
+        <text
+          v-else-if="barProps.bar.index === 6"
+          :x="barProps.bar.midPoint"
+          :y="`${barProps.bar.yLabel + 10}px`"
+          text-anchor="middle"
+        >
+          &#128526;
+        </text>
+        <text
+          v-else
+          :x="barProps.bar.midPoint"
+          :y="`${barProps.bar.yLabel + 10}px`"
+          text-anchor="middle"
+        >
+          {{ barProps.bar.label }}
+        </text>
       </template>
     </pure-vue-chart>
   </div>
