@@ -21,7 +21,14 @@
           :key="bar.index"
           :transform="`translate(${bar.x},0)`"
         >
-          <title>{{ bar.staticValue }}</title>
+          <title>
+            <slot
+              name="title"
+              :bar="bar"
+            >
+              <tspan>{{ bar.staticValue }}</tspan>
+            </slot>
+          </title>
           <rect
             :width="bar.width"
             :height="bar.height"

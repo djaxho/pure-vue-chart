@@ -86,6 +86,10 @@
         <tspan v-else-if="barProps.bar.index === 5">&#128526;</tspan>
         <tspan v-else>{{ barProps.bar.index }}</tspan>
       </template>
+      <template v-slot:title="props">
+        <tspan v-if="props.bar.index === 5">Very custom title text</tspan>
+        <tspan v-else>{{ props.bar.staticValue }}</tspan>
+      </template>
     </pure-vue-chart>
   </div>
 </template>
