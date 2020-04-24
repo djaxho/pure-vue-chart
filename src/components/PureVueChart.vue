@@ -17,35 +17,35 @@
         :height="innerChartHeight"
       >
         <g
-          v-for="bar in chartData"
-          :key="bar.index"
-          :transform="`translate(${bar.x},0)`"
+          v-for="{ index, x, staticValue, width, height, yOffset, midPoint } in chartData"
+          :key="index"
+          :transform="`translate(${x},0)`"
         >
-          <title>{{ bar.staticValue }}</title>
+          <title>{{ staticValue }}</title>
           <rect
-            :width="bar.width"
-            :height="bar.height"
+            :width="width"
+            :height="height"
             :x="2"
-            :y="bar.yOffset"
+            :y="yOffset"
           />
           <text
             v-if="showValues"
-            :x="bar.midPoint"
-            :y="bar.yOffset"
-            :dy="`${bar.height < 22 ? '-5px' : '15px'}`"
+            :x="midPoint"
+            :y="yOffset"
+            :dy="`${height < 22 ? '-5px' : '15px'}`"
             text-anchor="middle"
-          >{{ bar.staticValue }}</text>
+          >{{ staticValue }}</text>
           <g v-if="showXAxis">
             <text
-              :x="bar.midPoint"
+              :x="midPoint"
               :y="`${innerChartHeight + 14}px`"
               text-anchor="middle"
             >
-              <slot name='label' :bar="bar">{{ dataLabels[bar.index] }}</slot>
+              <slot name='label' :bar="bar">{{ dataLabels[index] }}</slot>
             </text>
             <line
-              :x1="bar.midPoint"
-              :x2="bar.midPoint"
+              :x1="midPoint"
+              :x2="midPoint"
               :y1="innerChartHeight+3"
               :y2="innerChartHeight"
               stroke="#555555"
