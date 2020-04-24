@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <h4>Basic: showing values</h4>
     <pure-vue-chart
       :points="dataPoints"
       :width="chartWidth"
@@ -8,6 +9,7 @@
     />
     <br>
     <br>
+    <h4>Y axis</h4>
     <pure-vue-chart
       :show-y-axis="true"
       :points="dataPoints"
@@ -16,6 +18,7 @@
     />
     <br>
     <br>
+    <h4>Max Y axis</h4>
     <pure-vue-chart
       :max-y-axis="50"
       :show-y-axis="true"
@@ -25,6 +28,7 @@
     />
     <br>
     <br>
+    <h4>X & Y axis</h4>
     <pure-vue-chart
       :max-y-axis="50"
       :show-y-axis="true"
@@ -35,6 +39,7 @@
     />
     <br>
     <br>
+    <h4>Trend line</h4>
     <pure-vue-chart
       :show-y-axis="true"
       :show-x-axis="true"
@@ -48,6 +53,7 @@
     />
     <br>
     <br>
+    <h4>Color</h4>
     <pure-vue-chart
       :show-y-axis="false"
       :show-x-axis="true"
@@ -62,6 +68,30 @@
     />
     <br>
     <br>
+    <h4>Custom labels and titles</h4>
+    <pure-vue-chart
+      :show-y-axis="false"
+      :show-x-axis="true"
+      :points="dataPoints"
+      :width="chartWidth"
+      :height="chartHeight"
+      :show-values="true"
+    >
+      <template v-slot:label="{ barIndex, label }" >
+        <tspan v-if="barIndex === 0">custom</tspan>
+        <tspan v-if="barIndex === 1">labels</tspan>
+        <tspan v-if="barIndex === 2">&#128526;</tspan>
+        <tspan v-if="barIndex > 2">{{ label }}</tspan>
+      </template>
+      <template v-slot:title="{ barIndex, staticValue }">
+        <tspan>
+          {{ barIndex === 0 ? `Custom title: ${staticValue}` : staticValue }}
+        </tspan>
+      </template>
+    </pure-vue-chart>
+    <br>
+    <br>
+    <h4>Plotting objects</h4>
     <pure-vue-chart
       :show-y-axis="false"
       :show-x-axis="true"
@@ -70,25 +100,6 @@
       :height="chartHeight"
       :show-values="true"
     />
-    <br>
-    <br>
-    <pure-vue-chart
-      :show-y-axis="false"
-      :show-x-axis="true"
-      :points="dataPointObjects"
-      :width="chartWidth"
-      :height="chartHeight"
-      :show-values="true"
-    >
-      <template v-slot:label="barProps" >
-        <tspan v-if="barProps.bar.index === 1">Here</tspan>
-        <tspan v-else-if="barProps.bar.index === 2">are</tspan>
-        <tspan v-else-if="barProps.bar.index === 3">custom</tspan>
-        <tspan v-else-if="barProps.bar.index === 4">labels</tspan>
-        <tspan v-else-if="barProps.bar.index === 5">&#128526;</tspan>
-        <tspan v-else>{{ barProps.bar.index }}</tspan>
-      </template>
-    </pure-vue-chart>
   </div>
 </template>
 
