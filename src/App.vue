@@ -140,6 +140,12 @@ export default {
       this.dataPoints = this.dataPoints.map(() => {
         return Math.floor(Math.random() * 41) + 1
       });
+      this.dataPointObjects = this.dataPointObjects.map(({ label, value }) => {
+        return {
+          label,
+          value: Math.floor(Math.random() * 41) + 1,
+        };
+      });
     },
   },
 };

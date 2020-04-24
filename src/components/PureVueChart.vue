@@ -235,14 +235,18 @@ export default {
       const slopeValues = this.applySlope(this.dynamicPoints);
       return {
         x1: this.partitionWidth / 2,
-        y1: this.roundTo(this.innerChartHeight - this.y(slopeValues[0]), 2),
+        y1: this.y(slopeValues[0])
+          ? this.roundTo(this.innerChartHeight - this.y(slopeValues[0]), 2)
+          : 0,
         x2: this.innerChartWidth - this.partitionWidth / 2,
-        y2: this.roundTo(this.innerChartHeight - this.y(slopeValues[slopeValues.length - 1]), 2),
+        y2: this.y(slopeValues[slopeValues.length - 1])
+          ? this.roundTo(this.innerChartHeight - this.y(slopeValues[slopeValues.length - 1]), 2)
+          : 0,
       };
     },
   },
   watch: {
-    points(updatedPoints) {
+    points() {
       this.tween(this.dataPoints);
     },
   },
