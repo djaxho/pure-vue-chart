@@ -77,11 +77,23 @@
       :height="chartHeight"
       :show-values="true"
     >
-      <template v-slot:label="{ barIndex, label }" >
-        <tspan v-if="barIndex === 0">custom</tspan>
-        <tspan v-if="barIndex === 1">labels</tspan>
-        <tspan v-if="barIndex === 2">&#128526;</tspan>
-        <tspan v-if="barIndex > 2">{{ label }}</tspan>
+      <template v-slot:label="{ barIndex, midPoint, yLabelOffset }">
+        <text
+          v-if="barIndex === 0"
+          :x="midPoint"
+          :y="`${yLabelOffset + 10}px`"
+          text-anchor="middle"
+        >
+          &#128526;
+        </text>
+        <image
+          v-else-if="barIndex === 1"
+          :x="`${midPoint - 10}px`"
+          :y="`${yLabelOffset}px`"
+          height="20"
+          width="20"
+          href="https://raw.githubusercontent.com/vuejs/art/master/logo.png"
+        />
       </template>
       <template v-slot:title="{ barIndex, staticValue }">
         <tspan>
@@ -95,6 +107,7 @@
     <pure-vue-chart
       :show-y-axis="false"
       :show-x-axis="true"
+      :label-height="20"
       :points="dataPointObjects"
       :width="chartWidth"
       :height="chartHeight"

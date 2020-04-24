@@ -17,7 +17,7 @@
         :height="innerChartHeight"
       >
         <g
-          v-for="{ index, x, staticValue, width, height, yOffset, midPoint } in chartData"
+          v-for="{ index, x, staticValue, width, height, yOffset, midPoint, yLabelOffset, label } in chartData"
           :key="index"
           :transform="`translate(${x},0)`"
         >
@@ -45,17 +45,20 @@
             text-anchor="middle"
           >{{ staticValue }}</text>
           <g v-if="showXAxis">
-            <text
-              :x="midPoint"
-              :y="`${innerChartHeight + 14}px`"
-              text-anchor="middle"
+            <slot
+              name="label"
+              :bar-index="index"
+              :mid-point="midPoint"
+              :y-label-offset="yLabelOffset"
             >
-              <slot
-                name="label"
-                :bar-index="index"
-                :label="dataLabels[index]"
-              >{{ dataLabels[index] }}</slot>
-            </text>
+              <text
+                :x="midPoint"
+                :y="`${yLabelOffset + 10}px`"
+                text-anchor="middle"
+              >
+                {{ label }}
+              </text>
+            </slot>
             <line
               :x1="midPoint"
               :x2="midPoint"
@@ -129,6 +132,7 @@ export default {
     width: { type: Number, default: 300 },
     showYAxis: { type: Boolean, default: false },
     showXAxis: { type: Boolean, default: false },
+    labelHeight: { type: Number, default: 12 },
     showTrendLine: { type: Boolean, default: false },
     trendLineColor: { type: String, default: 'green' },
     trendLineWidth: { type: Number, default: 2 },
@@ -182,8 +186,8 @@ export default {
     },
     xAxisHeight() {
       return this.showYAxis
-        ? 12
-        : 12 + this.extraBottomHeightForYAxisLabel + this.extraTopHeightForYAxisLabel;
+        ? this.labelHeight
+        : this.labelHeight + this.extraBottomHeightForYAxisLabel + this.extraTopHeightForYAxisLabel;
     },
     fullSvgWidth() {
       return this.width;
@@ -217,8 +221,10 @@ export default {
       return this.dynamicPoints.map((dynamicValue, index) => ({
         staticValue: this.staticPoints[index],
         index,
+        label: this.dataLabels[index],
         width: this.partitionWidth - 2,
         midPoint: this.partitionWidth / 2,
+        yLabelOffset: this.innerChartHeight + 4,
         x: index * this.partitionWidth,
         xMidpoint: index * this.partitionWidth + this.partitionWidth / 2,
         yOffset: this.innerChartHeight - this.y(dynamicValue),
