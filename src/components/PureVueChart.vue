@@ -123,6 +123,7 @@ export default {
     showValues: { type: Boolean, default: false },
     maxYAxis: { type: Number, default: 0 },
     useMonthLabels: { type: Boolean, default: false },
+    animationDuration: { type: Number, default: 0.5 },
   },
   data() {
     return {
@@ -265,7 +266,7 @@ export default {
         obj.pop();
         this.dynamicPoints = obj;
       };
-      TweenLite.to(initialData, 0.5, { ...desiredData, onUpdate: convertBackToArray });
+      TweenLite.to(initialData, this.animationDuration, { ...desiredData, onUpdate: convertBackToArray });
       this.staticPoints = desiredDataArray;
     },
     getTicks() {
