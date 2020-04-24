@@ -18,7 +18,7 @@
 
 <img src="src/assets/charts.gif" alt="charts" width="350"/>
 
-<p>When propes are updated the graph will automatically animate to the new values.</p>
+<p>When props are updated the graph will automatically animate to the new values.</p>
 
 ## Install
 ```
