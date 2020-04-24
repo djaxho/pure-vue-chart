@@ -21,7 +21,15 @@
           :key="index"
           :transform="`translate(${x},0)`"
         >
-          <title>{{ staticValue }}</title>
+          <title>
+            <slot
+              name="title"
+              :bar-index="index"
+              :static-value="staticValue"
+            >
+              <tspan>{{ staticValue }}</tspan>
+            </slot>
+          </title>
           <rect
             :width="width"
             :height="height"
@@ -42,7 +50,11 @@
               :y="`${innerChartHeight + 14}px`"
               text-anchor="middle"
             >
-              <slot name='label' :bar="bar">{{ dataLabels[index] }}</slot>
+              <slot
+                name="label"
+                :bar-index="index"
+                :label="dataLabels[index]"
+              >{{ dataLabels[index] }}</slot>
             </text>
             <line
               :x1="midPoint"
